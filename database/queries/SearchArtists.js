@@ -10,7 +10,7 @@ const Artist = require('../models/artist');
  */
 module.exports = (criteria, sortProperty, offset = 0, limit = 20) => {
 
-	const query = Artist.find({})
+	const query = Artist.find(createQuery(criteria))
 		// const sortOrder = {};
 		// sortOrder[sortProperty] = 1;
 		// same thing ^
@@ -27,4 +27,18 @@ module.exports = (criteria, sortProperty, offset = 0, limit = 20) => {
 				limit: limit
 			};
 		});
+};
+
+// helper function
+const createQuery = (criteria) => {
+	const query = {};
+	// criteria defaults with only the name available
+	// adjusting the age range adds criteria.age
+	if (criteria.age) {
+		query.age = {
+			$gte: criteria.age.min,
+			$lte: criteria.age.max
+		}
+	}
+	return query;
 };
