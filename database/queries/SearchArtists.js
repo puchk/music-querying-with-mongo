@@ -32,6 +32,11 @@ module.exports = (criteria, sortProperty, offset = 0, limit = 20) => {
 // helper function
 const createQuery = (criteria) => {
 	const query = {};
+
+	if (criteria.name) {
+		query.$text = { $search: criteria.name }
+	}
+
 	// criteria defaults with only the name available
 	// adjusting the age range adds criteria.age
 	if (criteria.age) {
